@@ -19,13 +19,13 @@ export default function Home() {
   }
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       // api code here
 
       toast.success('Success')
     } catch (error) {
-      toast.error('Error')
+      toast.error("Error")
     }
   }
 
@@ -49,11 +49,11 @@ export default function Home() {
           onChange={onChangeHandler}
           value={formData.description}
         />
-        <button type="submit" className="bg-orange-600 py-3 px-11 text-white">
+        <button onClick={onSubmitHandler} type="submit" className="bg-orange-600 py-3 px-11 text-white">
           Add Todo
         </button>
       </form>
-
+    
       <div className="relative overflow-x-auto mt-24 w-[60%] mx-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
