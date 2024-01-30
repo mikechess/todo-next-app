@@ -1,14 +1,28 @@
-import { ConnectDB } from "@/lib/config/db";
-import { NextResponse } from "next/server";
+import { ConnectDB } from '@/lib/config/db'
+import TodoModel from '@/lib/models/TodoModel'
+import { NextResponse } from 'next/server'
 
 const LoadDB = async () => {
-    await ConnectDB();
-};
+  await ConnectDB()
+}
 
-LoadDB();
+LoadDB()
 
 export async function GET(request) {
-    return NextResponse.json({
-        msg: "get method hit",
-    });
+  return NextResponse.json({
+    msg: 'get method hit',
+  })
+}
+
+export async function POST(request) {
+  const { title, description } = await request.json()
+
+  await TodoModel.create({
+    title,
+    description,
+  })
+
+  return NextResponse.json({
+    msg: 'Todo Created',
+  })
 }
