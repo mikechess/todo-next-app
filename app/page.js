@@ -29,6 +29,16 @@ export default function Home() {
     fetchTodos()
   }
 
+  const completeTodo = async (id) => {
+    const response = await axios.put('/api',{}, {
+      params: {
+        mongoId: id,
+      },
+    })
+    toast.success(response.data.msg);
+    fetchTodos();
+  }
+
   useEffect(() => {
     fetchTodos()
   }, [])
@@ -117,6 +127,7 @@ export default function Home() {
                   complete={item.isCompleted}
                   mongoId={item._id}
                   deleteTodo={deleteTodo}
+                  completeTodo={completeTodo}
                 />
               )
             })}
