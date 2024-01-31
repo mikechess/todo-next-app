@@ -12,16 +12,26 @@ export default function Home() {
     description: '',
   })
 
-  const [todoData, setTodoData] = useState([]);
+  const [todoData, setTodoData] = useState([])
 
   const fetchTodos = async () => {
-    const response = await axios.get("/api");
-    setTodoData(response.data.todos);
+    const response = await axios.get('/api')
+    setTodoData(response.data.todos)
+  }
+
+  const deleteTodo = async (id) => {
+    const response = await axios.delete('/api', {
+      params: {
+        mongoId: id,
+      },
+    })
+    toast.success(response.data.msg)
+    fetchTodos()
   }
 
   useEffect(() => {
-    fetchTodos();
-  }, []);
+    fetchTodos()
+  }, [])
 
   const onChangeHandler = (e) => {
     const name = e.target.name
@@ -31,20 +41,18 @@ export default function Home() {
   }
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       // api code here
-      const response = await axios.post("/api",formData);
-      toast.success(response.data.msg);
-      setFormData(
-        {
-          title: '',
-          description: '',
-        }
-      )
-      await fetchTodos();
+      const response = await axios.post('/api', formData)
+      toast.success(response.data.msg)
+      setFormData({
+        title: '',
+        description: '',
+      })
+      await fetchTodos()
     } catch (error) {
-      toast.error("Error")
+      toast.error('Error')
     }
   }
 
@@ -68,11 +76,15 @@ export default function Home() {
           onChange={onChangeHandler}
           value={formData.description}
         />
-        <button onClick={onSubmitHandler} type="submit" className="bg-orange-600 py-3 px-11 text-white">
+        <button
+          onClick={onSubmitHandler}
+          type="submit"
+          className="bg-orange-600 py-3 px-11 text-white"
+        >
           Add Todo
         </button>
       </form>
-    
+
       <div className="relative overflow-x-auto mt-24 w-[60%] mx-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -95,9 +107,17 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {todoData.map((item,index) => {
+            {todoData.map((item, index) => {
               return (
-                <Todo key={index} id={index} title={item.title} description={item.description} complete={item.isCompleted} mongoId={item._id} />
+                <Todo
+                  key={index}
+                  id={index}
+                  title={item.title}
+                  description={item.description}
+                  complete={item.isCompleted}
+                  mongoId={item._id}
+                  deleteTodo={deleteTodo}
+                />
               )
             })}
           </tbody>
